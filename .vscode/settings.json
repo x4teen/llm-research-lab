@@ -1,0 +1,10 @@
+
+
+{
+  "code-runner.executorMap": {
+    "python": "powershell.exe -NoProfile -File \"$workspaceRoot\\Run-Vast.ps1\" -Script \"$fullFileName\""
+  },
+  "code-runner.runInTerminal": true,
+  "code-runner.saveFileBeforeRun": true
+}
+
