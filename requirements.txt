@@ -1,0 +1,12 @@
+ollama
+datasets
+pandas
+numpy
+scipy
+scikit-learn
+matplotlib
+pydantic
+pyarrow
+pyyaml
+jupyterlab
+ipykernel
