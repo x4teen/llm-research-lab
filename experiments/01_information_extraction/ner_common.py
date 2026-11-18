@@ -1,10 +1,17 @@
-"""Shared settings, prompt text, and dev data for the NER experiments.
+"""Shared settings, prompt text, data, and helpers for the NER experiments.
 
 Keeping these in one place means baseline and Decomposed-QA differ only in
 how the task is decomposed, not in model settings, type definitions, or data.
+
+Third-party packages used only by some scripts (datasets) are imported inside
+the functions that need them, so importing this module stays lightweight.
 """
 
+import importlib
+import json
 import os
+import subprocess
+import sys
 
 MODEL = "qwen3:4b"
 OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://127.0.0.1:11434")
@@ -60,6 +67,48 @@ DATASET = [
         "gold": {},
     },
 ]
+
+
+def ensure_package(import_name: str, pip_name: str | None = None) -> None:
+    """Install a package into the running interpreter if it is missing.
+
+    On Vast.ai via Run-Vast.ps1 the running interpreter is /venv/main/bin/python.
+    """
+    try:
+        importlib.import_module(import_name)
+    except ImportError:
+        package = pip_name or import_name
+        print(f"Installing missing package: {package} into {sys.executable}", flush=True)
+        subprocess.check_call(
+            [sys.executable, "-m", "pip", "install", "--no-input", package]
+        )
+        # Make the freshly installed package importable in this process.
+        importlib.invalidate_caches()
+
+
+# CoNLL-2003. tner/conll2003 ships a loading script, which datasets>=4.0 no
+# longer runs; the Hub's auto-converted Parquet branch loads on every version.
+CONLL_DATASET_ID = "tner/conll2003"
+CONLL_REVISION = "refs/convert/parquet"
+
+
+def load_conll():
+    """Load CoNLL-2003 (train/validation/test), installing datasets if needed."""
+    ensure_package("datasets")
+    from datasets import load_dataset
+
+    return load_dataset(CONLL_DATASET_ID, revision=CONLL_REVISION)
+
+
+def load_conll_label_map() -> dict[int, str]:
+    """Return {tag_id: tag_name}; CoNLL tags are stored as integers."""
+    ensure_package("datasets")  # provides huggingface_hub
+    from huggingface_hub import hf_hub_download
+
+    path = hf_hub_download(CONLL_DATASET_ID, "dataset/label.json", repo_type="dataset")
+    with open(path, encoding="utf-8") as file:
+        label2id = json.load(file)
+    return {idx: name for name, idx in label2id.items()}
 
 
 def micro_scores(totals: dict[str, int]) -> dict[str, float]:
