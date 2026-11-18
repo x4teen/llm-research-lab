@@ -3,33 +3,24 @@ param(
     [long]$InstanceId = 0,
 
     [Parameter(Mandatory = $true)]
-    [string]$Script
+    [string]$Script,
+
+    # Remote project directory. Default: /workspace/llm-research-lab if
+    # /workspace is writable on the server, otherwise ~/llm-research-lab.
+    [string]$RemoteProject = "",
+
+    [string]$User = "root"
 )
 
 $ErrorActionPreference = "Stop"
 
 # 1. Portable local configuration
 $localProject = $PSScriptRoot
-$remoteProject = "/workspace/llm-research-lab"
-$key = Join-Path $HOME ".ssh\vast_gpu"
-$vastai = Join-Path $HOME "vast-cli-env\Scripts\vastai.exe"
-$python = "/venv/main/bin/python"
+. (Join-Path $localProject "deployment\vast\VastConnection.ps1")
+$key = Get-VastSshKey
 
 # 2. Resolve the current instance ID
-if ($InstanceId -eq 0) {
-    $configFile = Join-Path $localProject "config\vast-instance.txt"
-    if (-not (Test-Path -LiteralPath $configFile)) {
-        throw "Missing config/vast-instance.txt"
-    }
-    $InstanceId = [long](Get-Content -LiteralPath $configFile -Raw).Trim()
-}
-
-if (-not (Test-Path -LiteralPath $vastai)) {
-    throw "Vast.ai CLI not found: $vastai"
-}
-if (-not (Test-Path -LiteralPath $key)) {
-    throw "SSH private key not found: $key"
-}
+$InstanceId = Resolve-VastInstanceId -ProjectRoot $localProject -InstanceId $InstanceId
 
 # 3. Validate the local script and compute its relative path
 $projectRoot = [IO.Path]::GetFullPath($localProject).TrimEnd('\')
@@ -60,25 +51,10 @@ if ($relativeScript -notmatch '^[A-Za-z0-9_./-]+$') {
 }
 Write-Host "Script: $relativeScript"
 
-# 4. Discover the GPU server dynamically
-$instanceJson = & $vastai show instance $InstanceId --raw
-if ($LASTEXITCODE -ne 0) {
-    throw "Could not retrieve Vast.ai instance $InstanceId."
-}
-$instance = $instanceJson | ConvertFrom-Json
-if ($instance.actual_status -ne "running") {
-    throw "Vast.ai instance is not running."
-}
-
-$ip = $instance.public_ipaddr
-$mapping = @($instance.ports.'22/tcp') |
-    Where-Object { $_.HostIp -eq "0.0.0.0" } |
-    Select-Object -First 1
-if (-not $ip -or -not $mapping) {
-    throw "No direct SSH connection is available."
-}
-$port = [int]$mapping.HostPort
-$target = "root@$ip"
+# 4. Discover the server dynamically (direct SSH or Vast proxy)
+$endpoint = Get-VastSshEndpoint -InstanceId $InstanceId
+$port = $endpoint.Port
+$target = "$User@$($endpoint.Host)"
 
 $sshOptions = @(
     "-i", $key,
@@ -86,30 +62,44 @@ $sshOptions = @(
     "-o", "BatchMode=yes",
     "-o", "StrictHostKeyChecking=accept-new"
 )
-Write-Host "Connecting to instance $InstanceId at ${ip}:${port}"
+Write-Host "Connecting to instance $InstanceId at $($endpoint.Host):$port ($($endpoint.Route))"
 
-# 5. Create the remote project directory
-& ssh @sshOptions -p $port $target "mkdir -p '$remoteProject'"
-if ($LASTEXITCODE -ne 0) {
-    throw "Remote directory setup failed."
+# 5. Resolve and create the remote project directory
+if (-not $RemoteProject) {
+    # No double quotes: Windows PowerShell 5.1 mangles them for native exes.
+    $probe = 'if [ -d /workspace ] && [ -w /workspace ]; then b=/workspace; else b=$HOME; fi; ' +
+             'mkdir -p $b/llm-research-lab && echo $b/llm-research-lab'
+    $RemoteProject = (& ssh @sshOptions -p $port $target $probe | Select-Object -Last 1)
+    if ($LASTEXITCODE -ne 0 -or -not $RemoteProject) {
+        throw "Remote directory setup failed."
+    }
+    $RemoteProject = $RemoteProject.Trim()
+} else {
+    & ssh @sshOptions -p $port $target "mkdir -p '$RemoteProject'"
+    if ($LASTEXITCODE -ne 0) { throw "Remote directory setup failed." }
 }
+if ($RemoteProject -notmatch '^/[A-Za-z0-9_./-]+$') {
+    throw "Unexpected remote project path: $RemoteProject"
+}
+Write-Host "Remote project: $RemoteProject"
 
-# 6. Transfer code (not the whole repository)
-foreach ($folder in @("src", "experiments", "config")) {
-    $path = Join-Path $localProject $folder
+# 6. Transfer code and environment definition (not the whole repository)
+foreach ($item in @("src", "experiments", "config", "deployment", "requirements.txt")) {
+    $path = Join-Path $localProject $item
     if (Test-Path -LiteralPath $path) {
-        Write-Host "Uploading: $folder"
-        & scp @sshOptions -P $port -r $path "${target}:${remoteProject}/"
+        Write-Host "Uploading: $item"
+        & scp @sshOptions -P $port -r $path "${target}:${RemoteProject}/"
         if ($LASTEXITCODE -ne 0) {
-            throw "File transfer failed: $folder"
+            throw "File transfer failed: $item"
         }
     }
 }
 
-# 7. Execute the remote interpreter
-$remoteScript = "$remoteProject/$relativeScript"
-$command = "cd '$remoteProject' && '$python' '$remoteScript'"
-Write-Host "Executing $relativeScript on the remote GPU..."
+# 7. Prepare the remote Python environment and run the script.
+#    lab-env.sh picks a usable interpreter on whatever image this is and
+#    installs requirements.txt into it when needed.
+$command = "bash '$RemoteProject/deployment/remote/lab-env.sh' run '$RemoteProject/$relativeScript'"
+Write-Host "Executing $relativeScript on the remote server..."
 & ssh @sshOptions -p $port $target $command
 if ($LASTEXITCODE -ne 0) {
     throw "Remote Python execution failed."

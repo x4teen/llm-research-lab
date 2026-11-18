@@ -37,8 +37,8 @@
 | SSH | Container port 22 with host-mapped TCP port | Mapped public port may change each instance |
 | Ollama API | `127.0.0.1:11434` | **Do not expose publicly** |
 | Default model | `qwen3:4b` | Pulled if missing by startup script |
-| Remote Python | `/venv/main/bin/python` | Confirm this interpreter exists on the selected image |
-| Workspace | `/workspace/llm-research-lab` | Instance disk is not automatically permanent |
+| Remote Python | Auto-selected by `deployment/remote/lab-env.sh` | `/venv/main`, conda, or system `python3` (a project `.venv` is created if the base Python is not pip-installable). Override with `LAB_PYTHON` |
+| Workspace | `/workspace/llm-research-lab` (falls back to `~/llm-research-lab`) | Instance disk is not automatically permanent |
 
 **Storage warning:** A Vast.ai local volume is tied to a particular physical host. A new GPU instance on another host does not inherit that volume or any model downloads. Keep code on your local computer/GitHub and independently back up important outputs. If using a volume, verify its mount location and lifecycle before relying on it.
 
@@ -48,8 +48,8 @@ The accompanying script should:
 
 1. Preserve Jupyter/SSH startup by invoking the image's original `entrypoint.sh` correctly.
 2. Run custom installation asynchronously so that an Ollama download does not block Jupyter/SSH startup.
-3. Check that `/venv/main/bin/python` exists, and verify PyTorch/CUDA without replacing the image's CUDA-enabled PyTorch build.
-4. Install the `ollama` **Python client** into the exact interpreter used by `Run-Vast.ps1`, if missing.
+3. Select a Python >= 3.10 using the same rules as `deployment/remote/lab-env.sh`, and verify PyTorch/CUDA without replacing the image's CUDA-enabled PyTorch build.
+4. Install the `ollama` **Python client** and `datasets` into that interpreter, if missing (`Run-Vast.ps1` later installs the full `requirements.txt` via `lab-env.sh`).
 5. Install the Ollama **server** if missing, and start it bound to `127.0.0.1:11434`.
 6. Wait for `http://127.0.0.1:11434/api/tags` to respond before pulling `qwen3:4b`.
 7. Avoid unnecessary reinstallation or model downloads when the instance already has them.
@@ -75,8 +75,8 @@ On the remote Linux terminal:
 
 ```bash
 nvidia-smi
-/venv/main/bin/python -c 'import torch; print(torch.cuda.is_available())'
-/venv/main/bin/python -c 'from ollama import Client; print("Python Ollama client ready")'
+$(cat /workspace/llm-research-lab/.lab-env/python) -c 'import torch; print(torch.cuda.is_available())'
+$(cat /workspace/llm-research-lab/.lab-env/python) -c 'from ollama import Client; print("Python Ollama client ready")'
 
 tail -n 60 /workspace/ollama-setup.log
 curl -fsS http://127.0.0.1:11434/api/tags
@@ -115,7 +115,7 @@ In a PowerShell terminal at the repository root:
 .\Run-Vast.ps1 -Script 'src/test_gpu.py'
 ```
 
-Your script should query the Vast.ai CLI, discover the current public IP and mapped SSH port, copy the required source files, then execute the chosen script using `/venv/main/bin/python`. It must not require hardcoded IP addresses.
+Your script should query the Vast.ai CLI, discover the current public IP and mapped SSH port, copy the required source files, then execute the chosen script through `deployment/remote/lab-env.sh`, which picks the interpreter and installs `requirements.txt` when it changes. SSH uses the direct mapped port when available, otherwise the Vast proxy (`ssh_host`/`ssh_port`). It must not require hardcoded IP addresses.
 
 ### Use local notebooks with the remote Jupyter kernel
 
@@ -156,7 +156,7 @@ llm-research-lab/
 |---|---|
 | Template name | LLM Research Lab - PyTorch Jupyter Ollama Qwen |
 | Exact Docker image/tag | ______________________________ |
-| Python path | `/venv/main/bin/python` (verify) |
+| Python path | `cat <project>/.lab-env/python` on the server |
 | Jupyter port / HTTP or HTTPS | ______________________________ |
 | Jupyter startup mechanism | ______________________________ |
 | SSH launch mode | Jupyter + SSH |
@@ -170,7 +170,7 @@ llm-research-lab/
 
 | Symptom | Check |
 |---|---|
-| `ModuleNotFoundError: ollama` | Install the **Python client** into `/venv/main/bin/python`, not a different `python` |
+| `ModuleNotFoundError` on the server | Run `bash deployment/remote/lab-env.sh setup` in the remote project; it installs `requirements.txt` into the selected interpreter |
 | Ollama CLI exists but no models | Use `ollama list`; inspect startup log; run `ollama pull qwen3:4b` if missing |
 | `ollama ps` empty | Normal unless a model is currently loaded |
 | Ollama API connection refused | Check server log and `curl http://127.0.0.1:11434/api/tags` |

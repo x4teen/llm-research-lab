@@ -1,0 +1,1540 @@
+{
+  "dataset": "tner/conll2003",
+  "revision": "refs/convert/parquet",
+  "split": "test",
+  "seed": 42,
+  "sample_size": 100,
+  "text_policy": "single-space token joining",
+  "span_policy": "zero-based, end-exclusive",
+  "label_set": [
+    "PER",
+    "ORG",
+    "LOC",
+    "MISC"
+  ],
+  "records": [
+    {
+      "id": "conll2003_test_00026",
+      "source_index": 26,
+      "text": "Cuttitta , who trainer George Coste said was certain to play on Saturday week , was named in a 21-man squad lacking only two of the team beaten 54-21 by England at Twickenham last month .",
+      "gold": [
+        {
+          "text": "Cuttitta",
+          "type": "PER",
+          "start": 0,
+          "end": 8
+        },
+        {
+          "text": "George Coste",
+          "type": "PER",
+          "start": 23,
+          "end": 35
+        },
+        {
+          "text": "England",
+          "type": "LOC",
+          "start": 153,
+          "end": 160
+        },
+        {
+          "text": "Twickenham",
+          "type": "LOC",
+          "start": 164,
+          "end": 174
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_00102",
+      "source_index": 102,
+      "text": "Wasim Akram b Harris 4",
+      "gold": [
+        {
+          "text": "Wasim Akram",
+          "type": "PER",
+          "start": 0,
+          "end": 11
+        },
+        {
+          "text": "Harris",
+          "type": "PER",
+          "start": 14,
+          "end": 20
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_00108",
+      "source_index": 108,
+      "text": "Salim Malik not out 1",
+      "gold": [
+        {
+          "text": "Salim Malik",
+          "type": "PER",
+          "start": 0,
+          "end": 11
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_00122",
+      "source_index": 122,
+      "text": "C. Harris lbw b Wasim 22",
+      "gold": [
+        {
+          "text": "C. Harris",
+          "type": "PER",
+          "start": 0,
+          "end": 9
+        },
+        {
+          "text": "Wasim",
+          "type": "PER",
+          "start": 16,
+          "end": 21
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_00130",
+      "source_index": 130,
+      "text": "8-213 9-216 .",
+      "gold": []
+    },
+    {
+      "id": "conll2003_test_00177",
+      "source_index": 177,
+      "text": "Ljubljana -LPR- Slovenia -RPR- 9 6 3 15",
+      "gold": [
+        {
+          "text": "Ljubljana",
+          "type": "ORG",
+          "start": 0,
+          "end": 9
+        },
+        {
+          "text": "Slovenia",
+          "type": "LOC",
+          "start": 16,
+          "end": 24
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_00187",
+      "source_index": 187,
+      "text": "Sevilla -LPR- Spain -RPR- 9 4 5 13",
+      "gold": [
+        {
+          "text": "Sevilla",
+          "type": "ORG",
+          "start": 0,
+          "end": 7
+        },
+        {
+          "text": "Spain",
+          "type": "LOC",
+          "start": 14,
+          "end": 19
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_00284",
+      "source_index": 284,
+      "text": "Benjamin 9.4-0-43-1 -LPR- 1nb 1w -RPR- , Hooper 10-0-27-2 -LPR- 1nb -RPR- , McLean",
+      "gold": [
+        {
+          "text": "Benjamin",
+          "type": "PER",
+          "start": 0,
+          "end": 8
+        },
+        {
+          "text": "Hooper",
+          "type": "PER",
+          "start": 41,
+          "end": 47
+        },
+        {
+          "text": "McLean",
+          "type": "PER",
+          "start": 76,
+          "end": 82
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_00292",
+      "source_index": 292,
+      "text": "MELBOURNE 1996-12-06",
+      "gold": [
+        {
+          "text": "MELBOURNE",
+          "type": "LOC",
+          "start": 0,
+          "end": 9
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_00322",
+      "source_index": 322,
+      "text": "Results in last of the group matches at the World Grand Prix badminton finals on Friday :",
+      "gold": [
+        {
+          "text": "World Grand Prix",
+          "type": "MISC",
+          "start": 44,
+          "end": 60
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_00326",
+      "source_index": 326,
+      "text": "Dong Jiong -LPR- China -RPR- beat Thomas Stuer-Lauridsen -LPR- Denmark -RPR- 15-10 15-6",
+      "gold": [
+        {
+          "text": "Dong Jiong",
+          "type": "PER",
+          "start": 0,
+          "end": 10
+        },
+        {
+          "text": "China",
+          "type": "LOC",
+          "start": 17,
+          "end": 22
+        },
+        {
+          "text": "Thomas Stuer-Lauridsen",
+          "type": "PER",
+          "start": 34,
+          "end": 56
+        },
+        {
+          "text": "Denmark",
+          "type": "LOC",
+          "start": 63,
+          "end": 70
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_00356",
+      "source_index": 356,
+      "text": "League teams after games played on Thursday -LPR- tabulate under",
+      "gold": [
+        {
+          "text": "League",
+          "type": "ORG",
+          "start": 0,
+          "end": 6
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_00379",
+      "source_index": 379,
+      "text": "DETROIT 15 9 4 81 53 34",
+      "gold": [
+        {
+          "text": "DETROIT",
+          "type": "ORG",
+          "start": 0,
+          "end": 7
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_00383",
+      "source_index": 383,
+      "text": "TORONTO 11 15 0 76 89 22",
+      "gold": [
+        {
+          "text": "TORONTO",
+          "type": "ORG",
+          "start": 0,
+          "end": 7
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_00396",
+      "source_index": 396,
+      "text": "TORONTO AT NY RANGERS",
+      "gold": [
+        {
+          "text": "TORONTO",
+          "type": "ORG",
+          "start": 0,
+          "end": 7
+        },
+        {
+          "text": "NY RANGERS",
+          "type": "ORG",
+          "start": 11,
+          "end": 21
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_00413",
+      "source_index": 413,
+      "text": "Tampa Bay 2 LOS ANGELES 1",
+      "gold": [
+        {
+          "text": "Tampa Bay",
+          "type": "ORG",
+          "start": 0,
+          "end": 9
+        },
+        {
+          "text": "LOS ANGELES",
+          "type": "ORG",
+          "start": 12,
+          "end": 23
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_00418",
+      "source_index": 418,
+      "text": "Paul Justin , starting for the sidelined Jim Harbaugh , was 14-of-23 for 144 yards and a touchdown for the the Colts , who played their last home game of the season .",
+      "gold": [
+        {
+          "text": "Paul Justin",
+          "type": "PER",
+          "start": 0,
+          "end": 11
+        },
+        {
+          "text": "Jim Harbaugh",
+          "type": "PER",
+          "start": 41,
+          "end": 53
+        },
+        {
+          "text": "Colts",
+          "type": "ORG",
+          "start": 111,
+          "end": 116
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_00419",
+      "source_index": 419,
+      "text": "Indianapolis closes with games at Kansas City and Cincinnati .",
+      "gold": [
+        {
+          "text": "Indianapolis",
+          "type": "LOC",
+          "start": 0,
+          "end": 12
+        },
+        {
+          "text": "Kansas City",
+          "type": "LOC",
+          "start": 34,
+          "end": 45
+        },
+        {
+          "text": "Cincinnati",
+          "type": "LOC",
+          "start": 50,
+          "end": 60
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_00456",
+      "source_index": 456,
+      "text": "WESTERN CONFERENCE",
+      "gold": []
+    },
+    {
+      "id": "conll2003_test_00511",
+      "source_index": 511,
+      "text": "SEATTLE 5 8 0 250 317",
+      "gold": [
+        {
+          "text": "SEATTLE",
+          "type": "ORG",
+          "start": 0,
+          "end": 7
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_00571",
+      "source_index": 571,
+      "text": "for , goals against , points -RPR- :",
+      "gold": []
+    },
+    {
+      "id": "conll2003_test_00636",
+      "source_index": 636,
+      "text": "Van der Vegt 77 -RPR- .",
+      "gold": [
+        {
+          "text": "Van der Vegt",
+          "type": "PER",
+          "start": 0,
+          "end": 12
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_00653",
+      "source_index": 653,
+      "text": "Lille 20 7 7 6 22 28 28",
+      "gold": [
+        {
+          "text": "Lille",
+          "type": "ORG",
+          "start": 0,
+          "end": 5
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_00666",
+      "source_index": 666,
+      "text": "Results of French first division",
+      "gold": [
+        {
+          "text": "French",
+          "type": "MISC",
+          "start": 11,
+          "end": 17
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_00700",
+      "source_index": 700,
+      "text": "SOCCER SHOWCASE-BETTING ON REAL MADRID V BARCELONA .",
+      "gold": [
+        {
+          "text": "REAL MADRID",
+          "type": "ORG",
+          "start": 27,
+          "end": 38
+        },
+        {
+          "text": "BARCELONA",
+          "type": "ORG",
+          "start": 41,
+          "end": 50
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_00787",
+      "source_index": 787,
+      "text": "Sevilla 15 4 2 9 13 20 14",
+      "gold": [
+        {
+          "text": "Sevilla",
+          "type": "ORG",
+          "start": 0,
+          "end": 7
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_00814",
+      "source_index": 814,
+      "text": "The two men were hit in the pelvis and leg .",
+      "gold": []
+    },
+    {
+      "id": "conll2003_test_00858",
+      "source_index": 858,
+      "text": "Charleroi - Eric Cleymans 18 , Ron Ellis 18 , Jacques Stas 14",
+      "gold": [
+        {
+          "text": "Charleroi",
+          "type": "ORG",
+          "start": 0,
+          "end": 9
+        },
+        {
+          "text": "Eric Cleymans",
+          "type": "PER",
+          "start": 12,
+          "end": 25
+        },
+        {
+          "text": "Ron Ellis",
+          "type": "PER",
+          "start": 31,
+          "end": 40
+        },
+        {
+          "text": "Jacques Stas",
+          "type": "PER",
+          "start": 46,
+          "end": 58
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_00881",
+      "source_index": 881,
+      "text": "A police spokesman said two youths believed to be supporters of President Nelson Mandela 's African National Congress -LPR- ANC -RPR- had been killed when unknown gunmen opened fire at the rural settlement of Izingolweni on KwaZulu-Natal province 's south coast on Thursday night .",
+      "gold": [
+        {
+          "text": "Nelson Mandela",
+          "type": "PER",
+          "start": 74,
+          "end": 88
+        },
+        {
+          "text": "African National Congress",
+          "type": "ORG",
+          "start": 92,
+          "end": 117
+        },
+        {
+          "text": "ANC",
+          "type": "ORG",
+          "start": 124,
+          "end": 127
+        },
+        {
+          "text": "Izingolweni",
+          "type": "LOC",
+          "start": 209,
+          "end": 220
+        },
+        {
+          "text": "KwaZulu-Natal",
+          "type": "LOC",
+          "start": 224,
+          "end": 237
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_00895",
+      "source_index": 895,
+      "text": "with the United States and with the first woman ever to hold the position of Secretary of State .",
+      "gold": [
+        {
+          "text": "United States",
+          "type": "LOC",
+          "start": 9,
+          "end": 22
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_00902",
+      "source_index": 902,
+      "text": "\" The nomination ...",
+      "gold": []
+    },
+    {
+      "id": "conll2003_test_00914",
+      "source_index": 914,
+      "text": "-- Bucharest Newsroom 40-1 3120264",
+      "gold": [
+        {
+          "text": "Bucharest Newsroom",
+          "type": "ORG",
+          "start": 3,
+          "end": 21
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_00933",
+      "source_index": 933,
+      "text": "\" In 1970s , Poland received from unclaimed accounts in Switzerland a sum of 460,000 francs .",
+      "gold": [
+        {
+          "text": "Poland",
+          "type": "LOC",
+          "start": 13,
+          "end": 19
+        },
+        {
+          "text": "Switzerland",
+          "type": "LOC",
+          "start": 56,
+          "end": 67
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_00952",
+      "source_index": 952,
+      "text": "It has produced 1.5 million hectolitres .",
+      "gold": []
+    },
+    {
+      "id": "conll2003_test_00953",
+      "source_index": 953,
+      "text": "Van Boxmeer would not say how much higher 1997 profits or market share could be but said sales of leading Polish brewers should rise as the country 's young urban professionals gradually switch from vodka to beer .",
+      "gold": [
+        {
+          "text": "Van Boxmeer",
+          "type": "PER",
+          "start": 0,
+          "end": 11
+        },
+        {
+          "text": "Polish",
+          "type": "MISC",
+          "start": 106,
+          "end": 112
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_01003",
+      "source_index": 1003,
+      "text": "The 35-year-old woman was charged with possession of explosives with intent to endanger life and making a house available for the purpose of terrorism , police said .",
+      "gold": []
+    },
+    {
+      "id": "conll2003_test_01083",
+      "source_index": 1083,
+      "text": "WINNIPEG 1996-12-06",
+      "gold": [
+        {
+          "text": "WINNIPEG",
+          "type": "LOC",
+          "start": 0,
+          "end": 8
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_01093",
+      "source_index": 1093,
+      "text": "Aug 97 72.41 72.07 68.01 69.45-74.18",
+      "gold": []
+    },
+    {
+      "id": "conll2003_test_01126",
+      "source_index": 1126,
+      "text": "-- New York Commodities Desk , 212-859-1640",
+      "gold": [
+        {
+          "text": "New York Commodities",
+          "type": "ORG",
+          "start": 3,
+          "end": 23
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_01138",
+      "source_index": 1138,
+      "text": "New York City on Friday said that it planned a $ 775 million refunding for January that will include its first floating rate issue of taxable debt for European investors .",
+      "gold": [
+        {
+          "text": "New York City",
+          "type": "LOC",
+          "start": 0,
+          "end": 13
+        },
+        {
+          "text": "European",
+          "type": "MISC",
+          "start": 151,
+          "end": 159
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_01139",
+      "source_index": 1139,
+      "text": "A city official , who declined to be named , explained that Goldman , Sachs , which this summer was demoted to the second tier of the syndicate , proposed the floating rate issue and as a result was promoted to book runner for this offering .",
+      "gold": [
+        {
+          "text": "Goldman , Sachs",
+          "type": "ORG",
+          "start": 60,
+          "end": 75
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_01185",
+      "source_index": 1185,
+      "text": "A statement said Piniel Sindiso Ncube was hanged at dawn .",
+      "gold": [
+        {
+          "text": "Piniel Sindiso Ncube",
+          "type": "PER",
+          "start": 17,
+          "end": 37
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_01200",
+      "source_index": 1200,
+      "text": "\" We hope that if the front moves forward or stabilises then we will have access -LPR- to the large group of refugees -RPR- with reconnaissance or humanitarian agencies .",
+      "gold": []
+    },
+    {
+      "id": "conll2003_test_01378",
+      "source_index": 1378,
+      "text": "The overnight market opened at 22.00 / 22.75 percent , then substantial money was taken up at 22.5 percent .",
+      "gold": []
+    },
+    {
+      "id": "conll2003_test_01393",
+      "source_index": 1393,
+      "text": "Traders noted the lack of blue chips or stocks traded at significant volume among the gainers .",
+      "gold": []
+    },
+    {
+      "id": "conll2003_test_01408",
+      "source_index": 1408,
+      "text": "Plastic surgery is booming , especially among men , as Brazilians spend much of their new-found wealth on the latest beauty treatments , said the organisers of a four-day international plastic surgery conference that opened on Friday .",
+      "gold": [
+        {
+          "text": "Brazilians",
+          "type": "MISC",
+          "start": 55,
+          "end": 65
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_01455",
+      "source_index": 1455,
+      "text": "-- Chris Aspin , Mexico City newsroom +525 728-7903",
+      "gold": [
+        {
+          "text": "Chris Aspin",
+          "type": "PER",
+          "start": 3,
+          "end": 14
+        },
+        {
+          "text": "Mexico City",
+          "type": "LOC",
+          "start": 17,
+          "end": 28
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_01470",
+      "source_index": 1470,
+      "text": "' ' The reactions from business and unions which I have seen have been almost unanimously positive , so I do n't see any problem , ' ' he said .",
+      "gold": []
+    },
+    {
+      "id": "conll2003_test_01481",
+      "source_index": 1481,
+      "text": "He was responding to questions at a news conference called to discuss next week 's ministerial meeting of the Organisation of the Islamic Conference -LPR- OIC -RPR- in Jakarta .",
+      "gold": [
+        {
+          "text": "Organisation of the Islamic Conference",
+          "type": "ORG",
+          "start": 110,
+          "end": 148
+        },
+        {
+          "text": "OIC",
+          "type": "ORG",
+          "start": 155,
+          "end": 158
+        },
+        {
+          "text": "Jakarta",
+          "type": "LOC",
+          "start": 168,
+          "end": 175
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_01494",
+      "source_index": 1494,
+      "text": "It gave no further details .",
+      "gold": []
+    },
+    {
+      "id": "conll2003_test_01516",
+      "source_index": 1516,
+      "text": "On Tuesday and Wednesday , opposition leader Aung San Suu Kyi was restricted to her home by the military government to prevent her from being drawn into the protests .",
+      "gold": [
+        {
+          "text": "Aung San Suu Kyi",
+          "type": "PER",
+          "start": 45,
+          "end": 61
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_01550",
+      "source_index": 1550,
+      "text": "K.J. Matthew said at the Asia Rubber Markets meeting here Indian production of natural rubber in 1996/97 will reach 547,000 tonnes against projected demand of 578,000 tonnes , a gap of 31,000 tonnes .",
+      "gold": [
+        {
+          "text": "K.J. Matthew",
+          "type": "PER",
+          "start": 0,
+          "end": 12
+        },
+        {
+          "text": "Asia Rubber Markets meeting",
+          "type": "MISC",
+          "start": 25,
+          "end": 52
+        },
+        {
+          "text": "Indian",
+          "type": "MISC",
+          "start": 58,
+          "end": 64
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_01556",
+      "source_index": 1556,
+      "text": "In 2010/11 , domestic demand should rise further to 1.233 million tonnes while production will only reach about 914,000 tonnes .",
+      "gold": []
+    },
+    {
+      "id": "conll2003_test_01718",
+      "source_index": 1718,
+      "text": "Corn 79.6 163.5 9.4 95.7 252.0",
+      "gold": []
+    },
+    {
+      "id": "conll2003_test_01728",
+      "source_index": 1728,
+      "text": "Canola 47.1 988.1 1135.5 46.7 894.9 822.0",
+      "gold": []
+    },
+    {
+      "id": "conll2003_test_01731",
+      "source_index": 1731,
+      "text": "In addition , Statistics Canada indicated the following exports to the U.S. between August and September 1996 , in tonnes :",
+      "gold": [
+        {
+          "text": "Statistics Canada",
+          "type": "ORG",
+          "start": 14,
+          "end": 31
+        },
+        {
+          "text": "U.S.",
+          "type": "LOC",
+          "start": 71,
+          "end": 75
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_01839",
+      "source_index": 1839,
+      "text": "UNITED NATIONS 1996-12-06",
+      "gold": [
+        {
+          "text": "UNITED NATIONS",
+          "type": "ORG",
+          "start": 0,
+          "end": 14
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_01857",
+      "source_index": 1857,
+      "text": "ROME 1996-12-06",
+      "gold": [
+        {
+          "text": "ROME",
+          "type": "LOC",
+          "start": 0,
+          "end": 4
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_01881",
+      "source_index": 1881,
+      "text": "The agreement includes the early privatisation and modernisation of Polish oil refineries , which will be obliged to offer equal treatment to all buyers .",
+      "gold": [
+        {
+          "text": "Polish",
+          "type": "MISC",
+          "start": 68,
+          "end": 74
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_02069",
+      "source_index": 2069,
+      "text": "One of the players need 10 stitches to a cut on his forearm .",
+      "gold": []
+    },
+    {
+      "id": "conll2003_test_02187",
+      "source_index": 2187,
+      "text": "-- Rosemary Bennett , London Newsroom 44 171 542 2774",
+      "gold": [
+        {
+          "text": "Rosemary Bennett",
+          "type": "PER",
+          "start": 3,
+          "end": 19
+        },
+        {
+          "text": "London Newsroom",
+          "type": "ORG",
+          "start": 22,
+          "end": 37
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_02196",
+      "source_index": 2196,
+      "text": "LONDON 1996-12-06",
+      "gold": [
+        {
+          "text": "LONDON",
+          "type": "LOC",
+          "start": 0,
+          "end": 6
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_02232",
+      "source_index": 2232,
+      "text": "WELLINGTON 1996-12-06",
+      "gold": [
+        {
+          "text": "WELLINGTON",
+          "type": "LOC",
+          "start": 0,
+          "end": 10
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_02233",
+      "source_index": 2233,
+      "text": "New Zealand Prime Minister Jim Bolger , emerging from coalition talks with the nationalist New Zealand First party on Friday afternoon , said National and NZ First would meet again on Sunday .",
+      "gold": [
+        {
+          "text": "New Zealand",
+          "type": "LOC",
+          "start": 0,
+          "end": 11
+        },
+        {
+          "text": "Jim Bolger",
+          "type": "PER",
+          "start": 27,
+          "end": 37
+        },
+        {
+          "text": "New Zealand First",
+          "type": "ORG",
+          "start": 91,
+          "end": 108
+        },
+        {
+          "text": "National",
+          "type": "ORG",
+          "start": 142,
+          "end": 150
+        },
+        {
+          "text": "NZ First",
+          "type": "ORG",
+          "start": 155,
+          "end": 163
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_02261",
+      "source_index": 2261,
+      "text": "Thai rice vessels loading and movements at Dec 06 .",
+      "gold": [
+        {
+          "text": "Thai",
+          "type": "MISC",
+          "start": 0,
+          "end": 4
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_02298",
+      "source_index": 2298,
+      "text": "Japan 's Economic Planning Agency has not changed its view that the economy is gradually recovering , despite relatively weak gross domestic product figures released on Tuesday , EPA Vice Minister Shimpei Nukaya told reporters on Friday .",
+      "gold": [
+        {
+          "text": "Japan",
+          "type": "LOC",
+          "start": 0,
+          "end": 5
+        },
+        {
+          "text": "Economic Planning Agency",
+          "type": "ORG",
+          "start": 9,
+          "end": 33
+        },
+        {
+          "text": "EPA",
+          "type": "ORG",
+          "start": 179,
+          "end": 182
+        },
+        {
+          "text": "Shimpei Nukaya",
+          "type": "PER",
+          "start": 197,
+          "end": 211
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_02364",
+      "source_index": 2364,
+      "text": "\" If there are any movements toward freer trade , then Singapore 's economy and the electorate would gain , \" he said . \"",
+      "gold": [
+        {
+          "text": "Singapore",
+          "type": "LOC",
+          "start": 55,
+          "end": 64
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_02413",
+      "source_index": 2413,
+      "text": "16. Leatitia Dalloz -LPR- France -RPR- 1:18.96",
+      "gold": [
+        {
+          "text": "Leatitia Dalloz",
+          "type": "PER",
+          "start": 4,
+          "end": 19
+        },
+        {
+          "text": "France",
+          "type": "LOC",
+          "start": 26,
+          "end": 32
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_02418",
+      "source_index": 2418,
+      "text": "21. Shannon Nobis -LPR- U.S. -RPR- 1:19.08",
+      "gold": [
+        {
+          "text": "Shannon Nobis",
+          "type": "PER",
+          "start": 4,
+          "end": 17
+        },
+        {
+          "text": "U.S.",
+          "type": "LOC",
+          "start": 24,
+          "end": 28
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_02465",
+      "source_index": 2465,
+      "text": "10= Florence Masnada -LPR- France -RPR- 51",
+      "gold": [
+        {
+          "text": "Florence",
+          "type": "LOC",
+          "start": 4,
+          "end": 12
+        },
+        {
+          "text": "Masnada",
+          "type": "PER",
+          "start": 13,
+          "end": 20
+        },
+        {
+          "text": "France",
+          "type": "LOC",
+          "start": 27,
+          "end": 33
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_02472",
+      "source_index": 2472,
+      "text": "19= Kate Pace Lindsay -LPR- Canada -RPR- 23",
+      "gold": [
+        {
+          "text": "Kate Pace Lindsay",
+          "type": "PER",
+          "start": 4,
+          "end": 21
+        },
+        {
+          "text": "Canada",
+          "type": "LOC",
+          "start": 28,
+          "end": 34
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_02495",
+      "source_index": 2495,
+      "text": "19. Stefanie Schuster -LPR- Austria -RPR- 89",
+      "gold": [
+        {
+          "text": "Stefanie Schuster",
+          "type": "PER",
+          "start": 4,
+          "end": 21
+        },
+        {
+          "text": "Austria",
+          "type": "LOC",
+          "start": 28,
+          "end": 35
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_02533",
+      "source_index": 2533,
+      "text": "1. Renate Goetschl -LPR- Austria -RPR- one minute 47.71 seconds",
+      "gold": [
+        {
+          "text": "Renate Goetschl",
+          "type": "PER",
+          "start": 3,
+          "end": 18
+        },
+        {
+          "text": "Austria",
+          "type": "LOC",
+          "start": 25,
+          "end": 32
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_02574",
+      "source_index": 2574,
+      "text": "5. Ricco Gross -LPR- Germany -RPR- 26:33.0 -LPR- 1 -RPR-",
+      "gold": [
+        {
+          "text": "Ricco Gross",
+          "type": "PER",
+          "start": 3,
+          "end": 14
+        },
+        {
+          "text": "Germany",
+          "type": "LOC",
+          "start": 21,
+          "end": 28
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_02600",
+      "source_index": 2600,
+      "text": "They have 104 points , 15 ahead of USA I 's Jim Herberich and breakman Garrett Hines who managed only 10th place on Saturday .",
+      "gold": [
+        {
+          "text": "USA I",
+          "type": "ORG",
+          "start": 35,
+          "end": 40
+        },
+        {
+          "text": "Jim Herberich",
+          "type": "PER",
+          "start": 44,
+          "end": 57
+        },
+        {
+          "text": "Garrett Hines",
+          "type": "PER",
+          "start": 71,
+          "end": 84
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_02603",
+      "source_index": 2603,
+      "text": "China made a promising debut on the freestyle skiing world cup circuit in an aerials event in the French resort of Tignes on Saturday .",
+      "gold": [
+        {
+          "text": "China",
+          "type": "LOC",
+          "start": 0,
+          "end": 5
+        },
+        {
+          "text": "French",
+          "type": "MISC",
+          "start": 98,
+          "end": 104
+        },
+        {
+          "text": "Tignes",
+          "type": "LOC",
+          "start": 115,
+          "end": 121
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_02619",
+      "source_index": 2619,
+      "text": "-LPR- 52.76 / 53.18 -RPR-",
+      "gold": []
+    },
+    {
+      "id": "conll2003_test_02654",
+      "source_index": 2654,
+      "text": "TIGNES , France 1996-12-07",
+      "gold": [
+        {
+          "text": "TIGNES",
+          "type": "LOC",
+          "start": 0,
+          "end": 6
+        },
+        {
+          "text": "France",
+          "type": "LOC",
+          "start": 9,
+          "end": 15
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_02661",
+      "source_index": 2661,
+      "text": "4. Eric Bergoust -LPR- U.S -RPR- 207.15",
+      "gold": [
+        {
+          "text": "Eric Bergoust",
+          "type": "PER",
+          "start": 3,
+          "end": 16
+        },
+        {
+          "text": "U.S",
+          "type": "LOC",
+          "start": 23,
+          "end": 26
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_02708",
+      "source_index": 2708,
+      "text": "semifinals at the World Grand Prix finals on Saturday :",
+      "gold": [
+        {
+          "text": "World Grand Prix",
+          "type": "MISC",
+          "start": 18,
+          "end": 34
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_02745",
+      "source_index": 2745,
+      "text": "4. Grunde Njos -LPR- Norway -RPR- 1:16.44",
+      "gold": [
+        {
+          "text": "Grunde Njos",
+          "type": "PER",
+          "start": 3,
+          "end": 14
+        },
+        {
+          "text": "Norway",
+          "type": "LOC",
+          "start": 21,
+          "end": 27
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_02771",
+      "source_index": 2771,
+      "text": "SOCCER - LEADING SCOTTISH PREMIER DIVISION SCORERS .",
+      "gold": [
+        {
+          "text": "SCOTTISH PREMIER DIVISION",
+          "type": "MISC",
+          "start": 17,
+          "end": 42
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_02799",
+      "source_index": 2799,
+      "text": "SOCCER - NORTHERN IRELAND PREMIER DIVISION RESULTS / STANDINGS .",
+      "gold": [
+        {
+          "text": "NORTHERN IRELAND",
+          "type": "LOC",
+          "start": 9,
+          "end": 25
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_02859",
+      "source_index": 2859,
+      "text": "\" I 'd like to come over but there are a lot of things happening at home .",
+      "gold": []
+    },
+    {
+      "id": "conll2003_test_02872",
+      "source_index": 2872,
+      "text": "Kanchelskis 28 -RPR- .",
+      "gold": [
+        {
+          "text": "Kanchelskis",
+          "type": "PER",
+          "start": 0,
+          "end": 11
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_02874",
+      "source_index": 2874,
+      "text": "28,418",
+      "gold": []
+    },
+    {
+      "id": "conll2003_test_02885",
+      "source_index": 2885,
+      "text": "30,018",
+      "gold": []
+    },
+    {
+      "id": "conll2003_test_02932",
+      "source_index": 2932,
+      "text": "Montrose 17 9 3 5 30 25 30",
+      "gold": [
+        {
+          "text": "Montrose",
+          "type": "ORG",
+          "start": 0,
+          "end": 8
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_02988",
+      "source_index": 2988,
+      "text": "West Bromwich 20 5 9 6 26 31 24",
+      "gold": [
+        {
+          "text": "West Bromwich",
+          "type": "ORG",
+          "start": 0,
+          "end": 13
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_03016",
+      "source_index": 3016,
+      "text": "Wycombe 22 4 5 13 17 33 17",
+      "gold": [
+        {
+          "text": "Wycombe",
+          "type": "ORG",
+          "start": 0,
+          "end": 7
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_03033",
+      "source_index": 3033,
+      "text": "Torquay 22 8 4 10 22 24 28",
+      "gold": [
+        {
+          "text": "Torquay",
+          "type": "ORG",
+          "start": 0,
+          "end": 7
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_03037",
+      "source_index": 3037,
+      "text": "Mansfield 21 5 9 7 21 22 24",
+      "gold": [
+        {
+          "text": "Mansfield",
+          "type": "ORG",
+          "start": 0,
+          "end": 9
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_03108",
+      "source_index": 3108,
+      "text": "Chester 1 Boston 0",
+      "gold": [
+        {
+          "text": "Chester",
+          "type": "ORG",
+          "start": 0,
+          "end": 7
+        },
+        {
+          "text": "Boston",
+          "type": "ORG",
+          "start": 10,
+          "end": 16
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_03127",
+      "source_index": 3127,
+      "text": "The touring team were 27-0 ahead by half-time before easing up in the second-half .",
+      "gold": []
+    },
+    {
+      "id": "conll2003_test_03166",
+      "source_index": 3166,
+      "text": "Regular defender Artur Lekbello , who is injured , was missing from Hafizi 's squad named on Saturday for the Belfast match .",
+      "gold": [
+        {
+          "text": "Artur Lekbello",
+          "type": "PER",
+          "start": 17,
+          "end": 31
+        },
+        {
+          "text": "Hafizi",
+          "type": "PER",
+          "start": 68,
+          "end": 74
+        },
+        {
+          "text": "Belfast",
+          "type": "LOC",
+          "start": 110,
+          "end": 117
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_03300",
+      "source_index": 3300,
+      "text": "VANCOUVER AT DALLAS",
+      "gold": [
+        {
+          "text": "VANCOUVER",
+          "type": "ORG",
+          "start": 0,
+          "end": 9
+        },
+        {
+          "text": "DALLAS",
+          "type": "LOC",
+          "start": 13,
+          "end": 19
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_03305",
+      "source_index": 3305,
+      "text": "NEW YORK 1996-12-07",
+      "gold": [
+        {
+          "text": "NEW YORK",
+          "type": "LOC",
+          "start": 0,
+          "end": 8
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_03315",
+      "source_index": 3315,
+      "text": "Indiana 86 GOLDEN STATE 71",
+      "gold": [
+        {
+          "text": "Indiana",
+          "type": "ORG",
+          "start": 0,
+          "end": 7
+        },
+        {
+          "text": "GOLDEN STATE",
+          "type": "ORG",
+          "start": 11,
+          "end": 23
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_03397",
+      "source_index": 3397,
+      "text": "SOCCER - BALKAN STRIKE FORCE WIN OLD FIRM GAME FOR REAL .",
+      "gold": [
+        {
+          "text": "BALKAN",
+          "type": "LOC",
+          "start": 9,
+          "end": 15
+        },
+        {
+          "text": "REAL",
+          "type": "ORG",
+          "start": 51,
+          "end": 55
+        }
+      ]
+    },
+    {
+      "id": "conll2003_test_03416",
+      "source_index": 3416,
+      "text": "first division match :",
+      "gold": []
+    }
+  ]
+}

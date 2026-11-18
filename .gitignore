@@ -224,3 +224,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Remote environment state (lab-env.sh)
+.lab-env/

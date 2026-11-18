@@ -72,18 +72,37 @@ DATASET = [
 def ensure_package(import_name: str, pip_name: str | None = None) -> None:
     """Install a package into the running interpreter if it is missing.
 
-    On Vast.ai via Run-Vast.ps1 the running interpreter is /venv/main/bin/python.
+    Works with whatever interpreter runs the script (Run-Vast.ps1 selects
+    it via deployment/remote/lab-env.sh, which normally pre-installs
+    requirements.txt; this is the fallback for direct runs).
     """
     try:
         importlib.import_module(import_name)
+        return
     except ImportError:
-        package = pip_name or import_name
-        print(f"Installing missing package: {package} into {sys.executable}", flush=True)
-        subprocess.check_call(
-            [sys.executable, "-m", "pip", "install", "--no-input", package]
+        pass
+
+    package = pip_name or import_name
+    print(f"Installing missing package: {package} into {sys.executable}", flush=True)
+
+    pip = [sys.executable, "-m", "pip"]
+    if subprocess.call(pip + ["--version"], stdout=subprocess.DEVNULL,
+                       stderr=subprocess.DEVNULL) != 0:
+        subprocess.check_call([sys.executable, "-m", "ensurepip", "--upgrade"])
+
+    result = subprocess.run(
+        pip + ["install", "--no-input", "--disable-pip-version-check", package]
+    )
+    if result.returncode != 0:
+        raise RuntimeError(
+            f"Could not install '{package}' into {sys.executable}. If this is a "
+            "system Python (PEP 668 'externally managed'), run the script via "
+            "'bash deployment/remote/lab-env.sh run <script.py>', which creates "
+            "a project virtual environment, or set LAB_PYTHON to a writable one."
         )
-        # Make the freshly installed package importable in this process.
-        importlib.invalidate_caches()
+    # Make the freshly installed package importable in this process.
+    importlib.invalidate_caches()
+    importlib.import_module(import_name)
 
 
 # CoNLL-2003. tner/conll2003 ships a loading script, which datasets>=4.0 no
