@@ -1,161 +1,144 @@
+"""Single-question NER baseline over the dev dataset.
 
-import sys
+Run: python batch_baseline.py
+Shares model settings, type definitions, and data with decomposed_qa.py via
+ner_common.py so the two conditions differ only in task decomposition.
+"""
+
 import json
 import time
 from pathlib import Path
+
 from ollama import Client
+
 from evaluation import evaluate_ner
-
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(PROJECT_ROOT))
-
-
-# Use the Ollama endpoint that works in your environment
-client = Client(host="http://127.0.0.1:11434")
-MODEL = "qwen3:4b"
-
-# Small development dataset — not the held-out benchmark
-dataset = [
-    {
-        "id": "dev_001",
-        "text": "Microsoft CEO Satya Nadella visited London.",
-        "gold": {
-            "Microsoft": "Organization",
-            "Satya Nadella": "Person",
-            "London": "Location"
-        }
-    },
-    {
-        "id": "dev_002",
-        "text": "Tim Cook met Sundar Pichai at Google.",
-        "gold": {
-            "Tim Cook": "Person",
-            "Sundar Pichai": "Person",
-            "Google": "Organization"
-        }
-    },
-    {
-        "id": "dev_003",
-        "text": "Amazon opened an office in Berlin.",
-        "gold": {
-            "Amazon": "Organization",
-            "Berlin": "Location"
-        }
-    },
-    {
-        "id": "dev_004",
-        "text": "Marie Curie worked in Paris.",
-        "gold": {
-            "Marie Curie": "Person",
-            "Paris": "Location"
-        }
-    },
-    {
-        "id": "dev_005",
-        "text": "The engineer reviewed the report yesterday.",
-        "gold": {}
-    }
-]
-
-system = (
-    "Extract the named entities from the user's sentence. "
-    "Reply with a JSON object whose keys are the exact entity names "
-    "found in the sentence and whose values are Person, "
-    "Organization, or Location. "
-    "Return {} if no named entities are found."
+from ner_common import (
+    DATASET,
+    LABELS,
+    MODEL,
+    OLLAMA_HOST,
+    OPTIONS,
+    TYPE_DEFINITIONS,
+    micro_scores,
 )
 
-totals = {"TP": 0, "FP": 0, "FN": 0}
-records = []
-allowed_types = {"Person", "Organization", "Location"}
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
-for sample in dataset:
-    print(f"\nProcessing {sample['id']}")
+SYSTEM = (
+    "You extract named entities from a sentence.\n"
+    + TYPE_DEFINITIONS
+    + "List every entity of these types, copied exactly as it appears in the "
+    'sentence, with its type. Reply as {"entities": [{"text": ..., "type": ...}]}; '
+    "use [] if there are none."
+)
 
-    start = time.perf_counter()
-
-    response = client.chat(
-        model=MODEL,
-        think=False,
-        format="json",
-        messages=[
-            {"role": "system", "content": system},
-            {"role": "user", "content": sample["text"]}
-        ],
-        options={
-            "temperature": 0,
-            "num_predict": 256
+# Constrains decoding to this structure, so no free-form keys can appear.
+ENTITY_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "entities": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "text": {"type": "string"},
+                    "type": {"type": "string", "enum": list(LABELS)},
+                },
+                "required": ["text", "type"],
+            },
         }
-    )
+    },
+    "required": ["entities"],
+}
 
-    elapsed = time.perf_counter() - start
-    raw_output = response.message.content or ""
 
-    try:
-        prediction = json.loads(raw_output)
+def parse_prediction(raw: str, text: str) -> dict[str, str]:
+    """Validate the model output and return an entity-to-type mapping."""
+    parsed = json.loads(raw)
+    if not isinstance(parsed, dict) or not isinstance(parsed.get("entities"), list):
+        raise ValueError('Expected {"entities": [...]}')
+    prediction: dict[str, str] = {}
+    for item in parsed["entities"]:
+        if not isinstance(item, dict):
+            raise ValueError("Expected entity objects")
+        name, label = item.get("text"), item.get("type")
+        if not isinstance(name, str) or label not in LABELS:
+            raise ValueError("Invalid entity text or type")
+        if not name or name not in text:
+            raise ValueError(f"Entity mention absent from input text: {name!r}")
+        prediction[name] = label
+    return prediction
 
-        if not isinstance(prediction, dict):
-            raise ValueError("Expected a JSON object")
 
-        if not all(
-            isinstance(name, str)
-            and isinstance(label, str)
-            and label in allowed_types
-            for name, label in prediction.items()
-        ):
-            raise ValueError("Invalid entity dictionary")
+def main() -> None:
+    client = Client(host=OLLAMA_HOST)
+    totals = {"TP": 0, "FP": 0, "FN": 0}
+    records = []
 
-        valid = True
+    for sample in DATASET:
+        print(f"\nProcessing {sample['id']}")
+        start = time.perf_counter()
+        response = client.chat(
+            model=MODEL,
+            think=False,
+            format=ENTITY_SCHEMA,
+            messages=[
+                {"role": "system", "content": SYSTEM},
+                {"role": "user", "content": f"Sentence: {sample['text']}"},
+            ],
+            options=OPTIONS,
+        )
+        elapsed = time.perf_counter() - start
+        raw_output = response.message.content or ""
 
-    except (ValueError, TypeError) as error:
-        print(f"Invalid output: {error}")
-        prediction = {}
-        valid = False
+        error = None
+        try:
+            prediction = parse_prediction(raw_output, sample["text"])
+        except (ValueError, TypeError) as exc:  # JSONDecodeError is a ValueError
+            error = str(exc)
+            prediction = {}
+            print(f"Invalid output: {error}")
 
-    scores = evaluate_ner(sample["gold"], prediction)
+        scores = evaluate_ner(sample["gold"], prediction)
+        for key in totals:
+            totals[key] += scores[key]
 
-    for key in totals:
-        totals[key] += scores[key]
+        records.append({
+            "id": sample["id"],
+            "text": sample["text"],
+            "gold": sample["gold"],
+            "prediction": prediction,
+            "valid": error is None,
+            "error": error,
+            "raw_output": raw_output,
+            "scores": scores,
+            "latency_seconds": elapsed,
+            "generated_tokens": response.eval_count,
+            "generation_duration_ns": response.eval_duration,
+            "prompt_tokens": response.prompt_eval_count,
+        })
 
-    records.append({
-        "id": sample["id"],
-        "text": sample["text"],
-        "gold": sample["gold"],
-        "prediction": prediction,
-        "valid": valid,
-        "raw_output": raw_output,
-        "scores": scores,
-        "latency_seconds": elapsed,
-        "generated_tokens": response.eval_count,
-        "generation_duration_ns": response.eval_duration,
-        "prompt_tokens": response.prompt_eval_count,
-    })
+        print(f"Prediction: {prediction}")
+        print(f"TP={scores['TP']} FP={scores['FP']} FN={scores['FN']}")
+        print(f"F1={scores['f1']:.4f}")
 
-    print(f"Prediction: {prediction}")
-    print(f"TP={scores['TP']} FP={scores['FP']} FN={scores['FN']}")
-    print(f"F1={scores['f1']:.4f}")
+    micro = micro_scores(totals)
+    print("\n=== DATASET RESULTS (baseline) ===")
+    print(f"TP={totals['TP']}, FP={totals['FP']}, FN={totals['FN']}")
+    print(f"Micro-Precision: {micro['precision']:.4f}")
+    print(f"Micro-Recall:    {micro['recall']:.4f}")
+    print(f"Micro-F1:        {micro['f1']:.4f}")
+    print(f"Valid outputs:   {sum(r['valid'] for r in records)}/{len(records)}")
+    print(f"Total latency:   {sum(r['latency_seconds'] for r in records):.2f}s")
+    print(f"Generated tokens: {sum(r['generated_tokens'] or 0 for r in records)}")
 
-# Aggregate entity counts before calculating micro-F1
-tp, fp, fn = totals["TP"], totals["FP"], totals["FN"]
+    # Save all responses, including unsuccessful ones
+    output_path = PROJECT_ROOT / "results" / "ner_dev_baseline.json"
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(output_path, "w", encoding="utf-8") as file:
+        json.dump(records, file, indent=2, ensure_ascii=False)
+    print(f"\nSaved results to: {output_path}")
 
-precision = tp / (tp + fp) if tp + fp else 0.0
-recall = tp / (tp + fn) if tp + fn else 0.0
-f1 = 2 * tp / (2 * tp + fp + fn) if (2 * tp + fp + fn) else 0.0
 
-print("\n=== DATASET RESULTS ===")
-print(f"TP={tp}, FP={fp}, FN={fn}")
-print(f"Micro-Precision: {precision:.4f}")
-print(f"Micro-Recall:    {recall:.4f}")
-print(f"Micro-F1:        {f1:.4f}")
-print(f"Valid outputs:   {sum(r['valid'] for r in records)}/{len(records)}")
-print(f"Total latency:   {sum(r['latency_seconds'] for r in records):.2f}s")
-print(f"Generated tokens: {sum(r['generated_tokens'] or 0 for r in records)}")
-
-# Save all responses, including unsuccessful ones
-output_path = PROJECT_ROOT / "results" / "ner_dev_baseline.json"
-output_path.parent.mkdir(parents=True, exist_ok=True)
-
-with open(output_path, "w", encoding="utf-8") as file:
-    json.dump(records, file, indent=2, ensure_ascii=False)
-
-print(f"\nSaved results to: {output_path}")
+if __name__ == "__main__":
+    main()
